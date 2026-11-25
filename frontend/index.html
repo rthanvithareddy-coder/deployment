@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NetMotion - Intelligent Mobility</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">N</div><div><strong>NetMotion</strong><small>Intelligent Mobility</small></div></div>
+    <nav>
+      <button class="nav-item active" data-page="dashboard"><span>⌂</span>Dashboard</button>
+      <button class="nav-item" data-page="simulation"><span>◉</span>Network Simulation</button>
+      <button class="nav-item" data-page="algorithms"><span>⇄</span>Handover Algorithms</button>
+      <button class="nav-item" data-page="analytics"><span>▥</span>Performance Analytics</button>
+      <button class="nav-item" data-page="scenarios"><span>⚡</span>Scenario Testing</button>
+      <button class="nav-item" data-page="history"><span>◷</span>Simulation History</button>
+      <button class="nav-item" data-page="about"><span>ⓘ</span>About NetMotion</button>
+    </nav>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <button class="menu-button" id="menuButton">☰</button>
+      <div><h1 id="pageTitle">Network Overview</h1><p id="pageSubtitle">Real-time cellular mobility monitoring</p></div>
+      <div class="top-actions">
+        <span class="status-pill"><i></i><span id="runStatus">Simulation Paused</span></span>
+        <button class="icon-button" id="themeButton" title="Toggle theme">◐</button>
+      </div>
+    </header>
+
+    <div class="content">
+      <section id="dashboard" class="page active">
+        <div class="metric-grid">
+          <article class="metric-card"><div class="metric-icon blue">◉</div><div><span>Active Mobile Users</span><strong id="activeUsers">0</strong></div></article>
+          <article class="metric-card"><div class="metric-icon green">▣</div><div><span>Available Towers</span><strong id="availableTowers">0</strong></div></article>
+          <article class="metric-card"><div class="metric-icon purple">↔</div><div><span>Total Handovers</span><strong id="totalHandovers">0</strong></div></article>
+          <article class="metric-card"><div class="metric-icon orange">~</div><div><span>Average Signal</span><strong id="averageSignal">-120 dBm</strong></div></article>
+        </div>
+        <div class="dashboard-grid">
+          <article class="card network-card">
+            <div class="card-header"><div><h2>Live Network Visualization</h2><p>Illustrative distance-based simulation model</p></div>
+              <div class="legend"><span><i class="dot conventional"></i>Conventional</span><span><i class="dot mobility"></i>Mobility-Aware</span><span><i class="dot disconnected"></i>Disconnected</span></div>
+            </div>
+            <canvas id="networkCanvas" width="900" height="460"></canvas>
+          </article>
+          <article class="card activity-card"><div class="card-header"><div><h2>Live Activity</h2><p>Recent network events</p></div></div><div id="activityLog" class="activity-log"></div></article>
+        </div>
+        <div class="secondary-grid">
+          <article class="card"><div class="card-header"><div><h2>Handover Success</h2></div></div><canvas id="successMiniChart"></canvas></article>
+          <article class="card"><div class="card-header"><div><h2>Network Status</h2></div></div><div class="status-list">
+            <div><span>Connected users</span><strong id="connectedUsers">0</strong></div>
+            <div><span>Successful handovers</span><strong id="successfulHandovers">0</strong></div>
+            <div><span>Failed handovers</span><strong id="failedHandovers">0</strong></div>
+            <div><span>Congestion</span><strong id="congestionStatus">Low</strong></div>
+          </div></article>
+        </div>
+      </section>
+
+      <section id="simulation" class="page">
+        <div class="toolbar">
+          <button class="btn primary" id="startBtn">▶ Start</button><button class="btn" id="pauseBtn">Ⅱ Pause</button>
+          <button class="btn" id="resumeBtn">▶ Resume</button><button class="btn danger" id="resetBtn">↻ Reset</button>
+        </div>
+        <div class="simulation-grid">
+          <article class="card"><div class="card-header"><h2>Virtual City</h2></div><canvas id="simulationCanvas" width="900" height="520"></canvas></article>
+          <aside class="control-panel">
+            <article class="card">
+              <h2>Simulation Controls</h2>
+              <label>User count <input id="userCount" type="number" min="1" max="200" value="12"></label>
+              <label>User speed <input id="speed" type="number" min="0" max="10" step="0.1" value="1"></label>
+              <label>Handover threshold <input id="threshold" type="number" min="-120" max="-40" value="-90"></label>
+              <label>Stability margin <input id="stability" type="number" min="0" max="20" value="4"></label>
+              <button class="btn primary full" id="applySettings">Apply Settings</button>
+            </article>
+            <article class="card">
+              <h2>Tower Management</h2>
+              <button class="btn full" id="addTower">＋ Add Tower</button>
+              <div id="towerControls" class="tower-controls"></div>
+              <button class="btn full" id="addUser">＋ Add Mobile User</button>
+            </article>
+          </aside>
+        </div>
+      </section>
+
+      <section id="algorithms" class="page">
+        <div class="algorithm-grid">
+          <article class="card algorithm-card"><span class="algorithm-label">Method A</span><h2>Conventional Handover</h2><p>Maintains a connection while signal strength remains above the configured threshold. Candidate towers are selected by strongest available signal.</p><div class="formula">If S<sub>current</sub> &lt; threshold → select strongest nearby tower</div></article>
+          <article class="card algorithm-card"><span class="algorithm-label accent">Method B</span><h2>Mobility-Aware Handover</h2><p>Ranks eligible towers using signal quality, available capacity, and movement suitability.</p><div class="formula">S = 0.5Q + 0.3C + 0.2M</div></article>
+        </div>
+        <article class="card"><div class="card-header"><h2>Mobility-Aware Weights</h2></div><div class="weight-grid">
+          <label>Signal Quality <input id="weightSignal" type="number" min="0" max="1" step="0.1" value="0.5"></label>
+          <label>Capacity <input id="weightCapacity" type="number" min="0" max="1" step="0.1" value="0.3"></label>
+          <label>Mobility <input id="weightMobility" type="number" min="0" max="1" step="0.1" value="0.2"></label>
+          <button class="btn primary" id="applyWeights">Apply Weights</button>
+        </div></article>
+        <article class="card"><div class="card-header"><h2>Current Mobile-User Selections</h2></div><div class="table-wrap"><table><thead><tr><th>User</th><th>Conventional Tower</th><th>Conventional dBm</th><th>Mobility-Aware Tower</th><th>Mobility dBm</th><th>Factor Scores</th></tr></thead><tbody id="algorithmTable"></tbody></table></div></article>
+      </section>
+
+      <section id="analytics" class="page">
+        <div class="metric-grid analytics-metrics">
+          <article class="metric-card"><div><span>Conventional Success</span><strong id="convSuccess">0%</strong></div></article>
+          <article class="metric-card"><div><span>Mobility-Aware Success</span><strong id="mobSuccess">0%</strong></div></article>
+          <article class="metric-card"><div><span>Average Delay</span><strong id="avgDelay">0 ms</strong></div></article>
+          <article class="metric-card"><div><span>Average Throughput</span><strong id="avgThroughput">0 Mbps</strong></div></article>
+        </div>
+        <div class="analytics-grid">
+          <article class="card"><div class="card-header"><h2>Handover Success Rate</h2></div><canvas id="successChart"></canvas></article>
+          <article class="card"><div class="card-header"><h2>Average Signal Strength</h2></div><canvas id="signalChart"></canvas></article>
+          <article class="card"><div class="card-header"><h2>Average Handover Delay</h2></div><canvas id="delayChart"></canvas></article>
+          <article class="card"><div class="card-header"><h2>Congestion / Tower Utilization</h2></div><canvas id="towerChart"></canvas></article>
+        </div>
+      </section>
+
+      <section id="scenarios" class="page">
+        <div class="scenario-grid">
+          <article class="card scenario-card" data-scenario="Normal Mobility"><span class="scenario-icon blue">↗</span><h2>Normal Mobility</h2><p>Balanced movement across normal network conditions.</p><button class="btn full">Run Scenario</button></article>
+          <article class="card scenario-card" data-scenario="High Congestion"><span class="scenario-icon orange">≋</span><h2>High Congestion</h2><p>Increase connected demand and expose capacity limits.</p><button class="btn full">Run Scenario</button></article>
+          <article class="card scenario-card" data-scenario="High-Speed Mobility"><span class="scenario-icon purple">»</span><h2>High-Speed Mobility</h2><p>Increase user speed and observe handover stability.</p><button class="btn full">Run Scenario</button></article>
+          <article class="card scenario-card" data-scenario="Tower Failure"><span class="scenario-icon red">⚠</span><h2>Tower Failure</h2><p>Disable Tower B and force network reconnection.</p><button class="btn full">Run Scenario</button></article>
+          <article class="card scenario-card" data-scenario="Combined Scenario"><span class="scenario-icon dark">⚡</span><h2>Combined Scenario</h2><p>High mobility, congestion, and tower failure together.</p><button class="btn full">Run Scenario</button></article>
+        </div>
+      </section>
+
+      <section id="history" class="page">
+        <div class="toolbar"><button class="btn primary" id="saveExperiment">＋ Save Current Experiment</button><button class="btn" id="exportCsv">Export CSV</button><button class="btn" id="exportPdf">Export PDF</button></div>
+        <article class="card"><div class="table-wrap"><table><thead><tr><th>ID</th><th>Experiment</th><th>Date</th><th>Duration</th><th>Users</th><th>Towers</th><th>Scenario</th><th>Conventional</th><th>Mobility-Aware</th></tr></thead><tbody id="historyTable"></tbody></table></div></article>
+      </section>
+
+      <section id="about" class="page">
+        <article class="card about-card">
+          <h1>About NetMotion</h1><p class="lead">A real-time, mobility-aware cellular network simulation platform for comparative handover analysis.</p>
+          <h2>Problem Statement</h2><p>Traditional handover decisions often react only to signal strength and may overlook congestion, mobility direction, and connection stability.</p>
+          <h2>Objectives</h2><ul><li>Model mobile users and cell towers in a virtual environment.</li><li>Compare conventional and mobility-aware handover decisions.</li><li>Measure success, delay, throughput, interruption, and utilization.</li></ul>
+          <h2>Research Gap</h2><p>Many demonstrations use static values or decorative animations. NetMotion derives state and performance metrics from actual simulation events and equivalent conditions.</p>
+          <h2>Simulation Model Disclaimer</h2><p>All signal levels, throughput estimates, delays, and congestion values are illustrative outputs of this software model. They are not measurements from a real mobile network.</p>
+        </article>
+      </section>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
